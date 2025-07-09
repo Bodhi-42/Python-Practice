@@ -1,0 +1,33 @@
+# Write a function that takes a string and returns the character that appears most frequently. Ignore spaces and make it case-insensitive.
+
+def most_frequent_char(char):
+    
+    char = char.upper()
+    char = char.replace(" ", "")
+    count_char = {}
+    
+    for c in char:
+        if c in count_char:
+            count_char[c] = count_char[c] + 1
+        else:
+            count_char[c] = 1
+
+    frequent_char = char[0]
+    frequency = 0
+
+    for key in count_char:
+        frequency = count_char[frequent_char]
+        if count_char[key] > frequency:
+            frequent_char = key
+
+    frequent_char_list = []
+
+    for key in count_char:
+        if count_char[key] == frequency:
+            frequent_char_list.append(key)
+
+    frequent_char_list.sort()
+
+    print(frequent_char_list, frequency, "times")
+
+most_frequent_char("ChatGPT is awesome")
