@@ -1,0 +1,10 @@
+# Write a function find_peak(nums: list[int]) -> int that returns the index of a "peak" element.
+
+def find_peak(nums):
+    list_peak = []
+    for i in range(0, len(nums)):
+        if nums[i-1] < nums[i] > nums[i+1]:
+            list_peak.append(i)
+    return list_peak
+
+print(find_peak([6, 3, 4, 3, 5, 6, 4]))
