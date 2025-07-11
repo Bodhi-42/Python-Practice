@@ -1,0 +1,24 @@
+# Write a function diagonal_difference(matrix: list[list[int]]) -> int
+
+def diagonal_difference(matrix):
+    primary_diagonal = 0
+    secondary_diagonal = 0
+    count = 0
+    for row in matrix:
+        primary_diagonal = primary_diagonal + row[count]
+        count = count + 1
+
+    count = count - 1
+    
+    for row in matrix:
+        secondary_diagonal = secondary_diagonal + row[count]
+        count = count - 1
+    return abs(primary_diagonal - secondary_diagonal)
+
+matrix = [
+    [11, 2, 4],
+    [4, 5, 6],
+    [10, 8, -12]
+]
+
+print(diagonal_difference(matrix))
