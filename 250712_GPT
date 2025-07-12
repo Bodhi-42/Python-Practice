@@ -1,0 +1,11 @@
+# Alt ver using a package
+
+from collections import defaultdict
+
+def group_by_first_letter(words: list[str]) -> dict[str, list[str]]:
+    first_letter = defaultdict(list)
+    
+    for word in words:
+        first_letter[word[0].lower()].append(word)
+        
+    return dict(first_letter)
