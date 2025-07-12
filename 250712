@@ -1,0 +1,15 @@
+# Write a function that takes a list of strings and groups them into a dictionary, where the keys are the first letters, and the values are lists of words starting with that letter (case-insensitive).
+
+def group_by_first_letter(words: list[str]) -> dict[str, list[str]]:
+    
+    first_letter = {}
+    
+    for word in words:
+        if word[0].lower() in first_letter.keys():
+            first_letter[word[0].lower()].append(word)
+        else:
+            first_letter[word[0].lower()] = [word]
+        
+    return first_letter
+
+print(group_by_first_letter(["apple", "Ant", "banana", "Berry", "cherry", "avocado"]))
