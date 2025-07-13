@@ -1,0 +1,11 @@
+# Write a function that checks whether a date string is a palindrome when written in YYYYMMDD format.
+
+def is_palindrome_date(date_str: str) -> bool:
+    date_str = date_str.replace("-", "")
+    for c in range(0, (len(date_str)//2)):
+        if date_str[c] != date_str[len(date_str)-c-1]:
+            return False
+    return True
+
+print(is_palindrome_date("2020-02-02"))
+    
