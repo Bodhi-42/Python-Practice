@@ -1,0 +1,22 @@
+#You are given a list of integers where:
+#The list should contain all consecutive numbers from min(nums) to max(nums)
+#But one number is missing
+#The list may be unsorted, and may include duplicate numbersdef find_missing_in_unsorted(nums: list[int]) -> int:
+
+    complete_list = list(range(min(nums), max(nums)+1))
+    print(complete_list)
+    for n in nums:
+        try:
+            complete_list.remove(n)
+        except ValueError:
+            pass
+    return complete_list[0]
+
+print(find_missing_in_unsorted([4, 6, 7, 3, 3, 5, 7, 4, 6, 9]))
+
+#GPT's
+def find_missing_in_unsorted(nums: list[int]) -> int:
+    full = set(range(min(nums), max(nums) + 1))
+    actual = set(nums)
+    return (full - actual).pop()
+
