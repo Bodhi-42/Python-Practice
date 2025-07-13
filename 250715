@@ -1,0 +1,7 @@
+# You’re given a list of consecutive integers in ascending order with one number missing. Write a function that returns the missing number.
+
+def find_missing_number(nums: list[int]) -> int:
+    return int((nums[len(nums)-1]*(nums[len(nums)-1]+1)-((nums[0]-1)*nums[0]))/2-sum(nums))
+
+print(find_missing_number([1, 2, 3, 4, 6, 7, 8]))
+print(find_missing_number([10, 11, 12, 14])) 
