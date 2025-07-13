@@ -1,0 +1,22 @@
+# Find the smallest number with a given multiplicative persistence.
+
+def find_by_persistence(target: int) -> int:
+    count = 1
+    while multiplicative_persistence(count) != target:
+            if '0' in str(count):
+                count += 1
+            print(count)
+            count += 1
+    return count
+
+def multiplicative_persistence(n: int) -> int:
+    count = 0
+    while len(str(n)) > 1:
+        init = 1
+        for i in str(n):
+            init *= int(i)
+        n = init
+        count +=1
+    return count
+
+print(find_by_persistence(6))
