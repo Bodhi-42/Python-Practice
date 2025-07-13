@@ -1,0 +1,4 @@
+def find_missing_number(nums: list[int]) -> int:
+    expected_sum = sum(range(nums[0], nums[-1] + 1))
+    actual_sum = sum(nums)
+    return expected_sum - actual_sum
