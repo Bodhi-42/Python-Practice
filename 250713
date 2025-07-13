@@ -1,0 +1,9 @@
+# Write a function that checks whether a number is equal to the sum of its digits each raised to the power of its position (starting from 1).
+
+def is_digit_power_sum(n: int) -> bool:
+    digit_power_sum = 0
+    for d in range(0, len(str(n))):
+        digit_power_sum = digit_power_sum + int(str(n)[d])**(d+1)
+    return digit_power_sum == n
+
+print(is_digit_power_sum(135))
