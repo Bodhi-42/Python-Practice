@@ -1,0 +1,13 @@
+# Write a function that returns the multiplicative persistence of an integer.
+
+def multiplicative_persistence(n: int) -> int:
+    count = 0
+    while len(str(n)) > 1:
+        init = 1
+        for i in str(n):
+            init *= int(i)
+        n = init
+        count +=1
+    return count
+
+print(multiplicative_persistence(999)) 
