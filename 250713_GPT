@@ -1,0 +1,2 @@
+def is_digit_power_sum(n: int) -> bool:
+    return sum(int(d)**(i + 1) for i, d in enumerate(str(n))) == n
