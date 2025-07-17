@@ -1,0 +1,20 @@
+# Write a function that takes a list of strings and groups the anagrams together.
+
+def group_anagrams(words: list[str]) -> list[list[str]]:
+    output_list = []
+    ban_list = []
+    count = 0
+    for w in range(0, len(words)):
+        if w in ban_list:
+            pass
+        else:
+            output_list.append([words[w]])
+            for c in range(w+1, len(words)):
+                if sorted(words[w]) == sorted(words[c]):
+                    ban_list.append(c)
+                    output_list[count].append(words[c])
+            count += 1
+
+    return output_list
+
+print(group_anagrams(["eat", "tea", "tan", "ate", "nat", "bat"]))
