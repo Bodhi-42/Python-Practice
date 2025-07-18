@@ -1,0 +1,33 @@
+# Decode the Alien Dictionary
+# An alien language uses the same alphabet as English, but the words are sorted in a custom, unknown order. You are given a list of words sorted according to the alien dictionary. Your task is to deduce the order of letters in the alien alphabet.
+
+def alien_order(words: list[str]) -> str:
+    alphabets = ""
+    alphabets_sorted = ""
+    
+    for word in words:
+        for c in word:
+            if c not in alphabets:
+                alphabets += c
+
+    while len(alphabets) > 0:
+        for c in alphabets:
+            is_first = True
+            for word in words:
+                if c in word:
+                    if c == word[0]:
+                        pass
+                    else:
+                        is_first = False
+                        break
+                else:
+                    pass
+            if is_first:
+                alphabets_sorted += c
+                alphabets = alphabets.replace(c, "")
+                for word in words:
+                    words[words.index(word)] = word.lstrip(c)
+        
+    return(alphabets_sorted)
+
+print(alien_order(["wrt", "wrf", "er", "ett", "rftt"]))
