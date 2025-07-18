@@ -1,0 +1,34 @@
+def alien_order(words: list[str]) -> str:
+    graph = {char: set() for word in words for char in word}
+    visited = {}  # char: True (perm), False (temp)
+    result = []
+
+    # Step 1: Build the graph
+    for i in range(len(words) - 1):
+        w1, w2 = words[i], words[i+1]
+        min_len = min(len(w1), len(w2))
+        if w1[:min_len] == w2[:min_len] and len(w1) > len(w2):
+            return ""  # Invalid order
+        for a, b in zip(w1, w2):
+            if a != b:
+                graph[a].add(b)
+                break
+
+    # Step 2: DFS to perform topological sort
+    def dfs(char):
+        if char in visited:
+            return visited[char]  # False if temp -> cycle
+        visited[char] = False  # mark as temp
+        for nei in graph[char]:
+            if not dfs(nei):
+                return False
+        visited[char] = True
+        result.append(char)
+        return True
+
+    for char in graph:
+        if char not in visited:
+            if not dfs(char):
+                return ""  # Cycle detected
+
+    return "".join(reversed(result))
