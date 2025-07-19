@@ -1,0 +1,32 @@
+def is_valid_sudoku(board: list[list[str]]) -> bool:
+    for row in board:
+        seen = set()
+        for n in row:
+            if n not in "123456789.":
+                return False
+            if n != ".":
+                if n in seen:
+                    return False
+                seen.add(n)
+
+    for c in range(9):
+        seen = set()
+        for r in range(9):
+            val = board[r][c]
+            if val != ".":
+                if val in seen:
+                    return False
+                seen.add(val)
+
+    for r_block in range(0, 9, 3):
+        for c_block in range(0, 9, 3):
+            seen = set()
+            for r in range(3):
+                for c in range(3):
+                    val = board[r_block + r][c_block + c]
+                    if val != ".":
+                        if val in seen:
+                            return False
+                        seen.add(val)
+
+    return True
