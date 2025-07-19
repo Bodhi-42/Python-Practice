@@ -1,0 +1,52 @@
+# Write a function that takes a 9×9 Sudoku board and checks if it's a valid board according to Sudoku rules.
+
+def is_valid_sudoku(board: list[list[str]]) -> bool:
+    temp = ""
+    
+    for r in board:
+        for n in r:
+            if n not in ["1","2","3","4","5","6","7","8","9","."]:
+                return False
+            if n != ".":
+                temp += n
+        for n in temp:
+            if temp.count(n)>=2:
+                return False
+        temp = ""
+
+    for c in range(0, 9):
+        for r in board:
+            if r[c] != ".":
+                temp += r[c]
+        for n in temp:
+            if temp.count(n)>=2:
+                return False
+        temp = ""
+
+    for r_block in range(0, 3):
+        for c_block in range(0, 3):
+            for r in range(0, 3):
+                for c in range(0, 3):
+                    if board[3*r_block+r][3*c_block+c] != ".":
+                        temp += board[3*r_block+r][3*c_block+c]
+            for n in temp:
+                if temp.count(n)>=2:
+                    return False
+            temp = ""
+                
+    return True
+
+board = [
+  ["5","3",".",".","7",".",".",".","."],
+  ["6",".",".","1","9","5",".",".","."],
+  [".","9","8",".",".",".",".","6","."],
+  ["8",".",".",".","6",".",".",".","3"],
+  ["4",".",".","8",".","3",".",".","1"],
+  ["7",".",".",".","2",".",".",".","6"],
+  [".","6",".",".",".",".","2","8","."],
+  [".",".",".","4","1","9",".",".","5"],
+  [".",".",".",".","8",".",".","7","9"]
+]
+
+print(is_valid_sudoku(board))
+        
