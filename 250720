@@ -1,0 +1,25 @@
+# Returns the length of the longest substring without repeating characters
+def longest_unique_substring(s: str) -> int:
+    
+    skip = 0
+    longest_sub = 1
+    for loc_start in range(len(s)-1):
+        if loc_start < skip:
+            continue
+        sub = set(s[loc_start])
+        
+        for loc_end in range(loc_start+1, len(s)):
+            if s[loc_end] in sub:
+                loc_start = loc_end
+                break
+            else:
+                sub.add(s[loc_end])
+        if len(sub) > longest_sub:
+            longest_sub = len(sub)
+        skip = loc_end
+    return longest_sub
+
+print(longest_unique_substring("abcabcbb"))
+print(longest_unique_substring("bbbbb"))
+print(longest_unique_substring("pwwkew"))
+print(longest_unique_substring("a"))
