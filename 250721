@@ -1,0 +1,14 @@
+def are_anagrams(s1: str, s2: str) -> bool:
+    dict_1 = {'a': 0, 'b': 0, 'c': 0, 'd': 0, 'e': 0, 'f': 0, 'g': 0, 'h': 0, 'i': 0, 'j': 0, 'k': 0, 'l': 0, 'm': 0, 'n': 0, 'o': 0, 'p': 0, 'q': 0, 'r': 0, 's': 0, 't': 0, 'u': 0, 'v': 0, 'w': 0, 'x': 0, 'y': 0, 'z': 0}
+    dict_2 = {'a': 0, 'b': 0, 'c': 0, 'd': 0, 'e': 0, 'f': 0, 'g': 0, 'h': 0, 'i': 0, 'j': 0, 'k': 0, 'l': 0, 'm': 0, 'n': 0, 'o': 0, 'p': 0, 'q': 0, 'r': 0, 's': 0, 't': 0, 'u': 0, 'v': 0, 'w': 0, 'x': 0, 'y': 0, 'z': 0}
+    for c in s1:
+        if c.lower() in dict_1:
+            dict_1[c.lower()] += 1
+    for c in s2:
+        if c.lower() in dict_2:
+            dict_2[c.lower()] += 1
+    return dict_1 == dict_2
+            
+print(are_anagrams("Listen", "Silent"))          # True  
+print(are_anagrams("The eyes", "They see"))       # True  
+print(are_anagrams("Hello", "World"))          # False  
