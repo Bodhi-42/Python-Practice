@@ -1,0 +1,18 @@
+# Given a square matrix (2D list), calculate the absolute difference between the sum of its diagonals.
+
+def diagonal_difference(matrix: list[list[int]]) -> int:
+    dim = len(matrix)
+    diagonal_pri = 0
+    diagonal_sec = 0
+    for r in range(dim):
+        diagonal_pri += matrix[r][r]
+        diagonal_sec += matrix[r][-r-1]
+    return abs(diagonal_pri - diagonal_sec)
+
+matrix = [
+    [11, 2, 4],
+    [4, 5, 6],
+    [10, 8, -12]
+]
+
+print(diagonal_difference(matrix))
