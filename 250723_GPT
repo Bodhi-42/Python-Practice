@@ -1,0 +1,12 @@
+def top_k_frequent(nums: list[int], k: int) -> list[int]:
+    freq = {}
+    for num in nums:
+        freq[num] = freq.get(num, 0) + 1
+
+    # Sort by frequency descending, then by number ascending (tie-breaker)
+    sorted_freq = sorted(freq.items(), key=lambda x: (-x[1], x[0]))
+    
+    return [x[0] for x in sorted_freq[:k]]
+
+# Test
+print(top_k_frequent([1,1,1,2,2,3,3,3,3,4], 2))  # Output: [3, 1]
