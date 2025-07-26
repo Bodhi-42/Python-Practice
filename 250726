@@ -1,0 +1,16 @@
+def min_subarray_len(target: int, nums: list[int]) -> int:
+    len_arr = len(nums)
+    sub_min = 0
+    sub_max = 1
+    answer = []
+    
+    while sub_max <= len_arr:
+        if sum(nums[sub_min:sub_max]) < target:
+            sub_max += 1
+        else:
+            answer.append(sub_max-sub_min)
+            sub_min += 1
+    if answer:
+        return min(answer)
+    else:
+        return 0
