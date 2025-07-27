@@ -1,0 +1,29 @@
+def ship_within_days(weights: list[int], days: int) -> int:
+
+    left = max(weights) # O(n)
+    right = sum(weights) # O(n)
+    answers = []
+
+    while left <= right:
+
+        mid = (left + right) // 2
+        days_take = 1
+        w_package = 0
+        
+        for w in weights:
+            if w_package + w <= mid:
+                w_package += w
+            else:
+                w_package = w
+                days_take += 1
+
+        if days == days_take:
+            answers.append(mid)
+            right = mid - 1
+        elif days > days_take:
+            right = mid - 1
+        else:
+            left = mid + 1
+    print(min(answers))
+
+ship_within_days([1,2,3,4,5,6,7,8,9,10], 5)  # Output: 15
