@@ -1,0 +1,14 @@
+def find_min_arrows(intervals: list[list[int]]) -> int:
+    if not intervals:
+        return 0
+
+    intervals.sort(key=lambda x: x[1])
+    arrows = 1
+    end = intervals[0][1]
+
+    for interval in intervals[1:]:
+        if interval[0] > end:
+            arrows += 1
+            end = interval[1]
+
+    return arrows
