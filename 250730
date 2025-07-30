@@ -1,0 +1,21 @@
+# You are given a list of intervals, where each interval represents a balloon's horizontal diameter (start to end). A single arrow can burst all balloons that intersect at one point.
+# Your task is to find the minimum number of arrows needed to burst all balloons.
+
+def find_min_arrows(intervals: list[list[int]]) -> int:
+    
+    intervals = sorted(intervals, key = lambda intervals:intervals[0])
+    lower_bound = intervals[0][0]
+    upper_bound = intervals[0][1]
+    arrow_req = 1
+    
+    for i in intervals[1:]:
+        if i[0] <= upper_bound:
+            upper_bound = min(upper_bound, i[1])
+            lower_bound = i[0]
+        else:
+            arrow_req += 1
+            upper_bound = i[1]
+            lower_bound = i[0]
+    return arrow_req
+
+print(find_min_arrows([[10,16],[2,8],[1,6],[7,12]]))
