@@ -1,0 +1,19 @@
+def erase_overlap_intervals(intervals: list[list[int]]) -> int:
+    
+    if not intervals:
+        return 0
+
+    intervals.sort(key=lambda x: x[1])
+    erase = 0
+    end = intervals[0][1]
+
+    for interval in intervals[1:]:
+        if interval[0] >= end:
+            end = interval[1]
+        else:
+            erase += 1
+
+    return erase
+
+print(erase_overlap_intervals([[1,2],[2,3],[3,4],[1,3]]))
+print(erase_overlap_intervals([[1,2],[1,2],[1,2]]))
