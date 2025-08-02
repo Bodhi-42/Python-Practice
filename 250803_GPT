@@ -1,0 +1,28 @@
+# Correct version of Dijkstra Algorithm by GPT.
+
+import heapq
+
+def dijkstra(graph: dict[str, list[tuple[str, int]]], start: str) -> dict[str, int]:
+    # Initialize distances
+    distance = {node: float('inf') for node in graph}
+    distance[start] = 0
+
+    # Min-heap: (distance, node)
+    heap = [(0, start)]
+    visited = set()
+
+    while heap:
+        current_dist, current_node = heapq.heappop(heap)
+
+        if current_node in visited:
+            continue
+        visited.add(current_node)
+
+        for neighbor, weight in graph[current_node]:
+            if neighbor not in visited:
+                new_dist = current_dist + weight
+                if new_dist < distance[neighbor]:
+                    distance[neighbor] = new_dist
+                    heapq.heappush(heap, (new_dist, neighbor))
+
+    return distance
