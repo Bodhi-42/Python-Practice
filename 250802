@@ -1,0 +1,53 @@
+# Meant to bulid Dijkstra Algorithm, but misunderstood the concept. So code belows is about the shortest path in Bidirectional Graph
+
+import heapq
+
+def dijkstra(
+        graph: dict[str, list[tuple[str, int]]],
+        start: str)-> dict[str, int]:
+    
+    distance = dict()
+    heap = [(0, start)]
+    visited = set()
+    
+    for node in graph:
+        if node != start:
+            distance[node] = float("inf")
+        else:
+            distance[node] = 0
+
+    while heap:
+        _, current = heapq.heappop(heap)
+        if current in visited:
+            continue
+        visited.add(current)
+
+        for node in graph:
+            if current == node:
+                for node, d in graph[current]:
+                    if distance[current] + d < distance[node]:
+                        distance[node] = distance[current] + d
+                        heapq.heappush(heap, (distance[node], node))
+                continue
+            for line in graph[node]:
+                if current == line[0]:
+                    if distance[current] + line[1] < distance[node]:
+                        distance[node] = distance[current] + line[1]
+                        heapq.heappush(heap, (distance[node], node))                    
+
+    return distance
+
+
+graph = {
+    'A': [('B', 1), ('C', 4)],
+    'B': [('C', 2), ('D', 5)],
+    'C': [('D', 1)],
+    'D': []
+}
+
+
+print(dijkstra(graph, 'A'))
+print(dijkstra(graph, 'B'))
+print(dijkstra(graph, 'C'))
+print(dijkstra(graph, 'D'))
+    
