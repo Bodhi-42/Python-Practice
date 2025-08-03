@@ -1,0 +1,23 @@
+from heapq import heappush, heappop
+from collections import defaultdict
+
+def find_cheapest_price(n, flights, source, destination, k):
+    graph = defaultdict(list)
+    for u, v, w in flights:
+        graph[u].append((v, w))
+
+    # (total_cost, current_city, stops_used)
+    heap = [(0, source, 0)]
+
+    while heap:
+        cost, city, stops = heappop(heap)
+
+        if city == destination:
+            return cost
+        if stops > k:
+            continue
+
+        for nei, price in graph[city]:
+            heappush(heap, (cost + price, nei, stops + 1))
+
+    return -1
