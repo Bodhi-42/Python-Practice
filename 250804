@@ -1,0 +1,43 @@
+from heapq import heappush, heappop
+
+def find_cheapest_price(
+        n: int,
+        flights: list[tuple[str, str, int]],
+        source: str,
+        destination: str,
+        k: int
+        ) -> int:
+
+    heap = [(0, source)]
+    stop = 0
+    heap_cost = []
+
+    while stop < k + 1:
+        print(heap)
+        current = heappop(heap)
+        for f in flights:
+            if current[1] == f[0]:
+                heappush(heap, (current[0] + f[2], f[1]))
+                if f[1] == destination:
+                    heappush(heap_cost, current[0] + f[2])
+            elif current[1] == f[1]:
+                heappush(heap, (current[0] + f[2], f[0]))
+                if f[0] == destination:
+                    heappush(heap_cost, current[0] + f[2])
+        stop += 1
+        
+    if heap_cost:                
+        return heappop(heap_cost)
+    else:
+        return -1
+
+
+flights = [
+    ("A", "B", 100),
+    ("B", "C", 100),
+    ("A", "C", 500)
+]
+
+print(find_cheapest_price(3, flights, "A", "C", 1)) # ➤ 200 (A → B → C)
+print(find_cheapest_price(3, flights, "A", "C", 0)) # ➤ 500 (Only direct flight allowed)
+    
