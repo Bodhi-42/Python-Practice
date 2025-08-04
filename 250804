@@ -1,0 +1,32 @@
+from heapq import heappush, heappop
+
+def min_coins(coins: list[int], amount: int) -> int:
+
+    coins.sort()
+    dp = dict()
+    dp[0] = 0
+
+    for _ in range(amount // coins[0] + 1):
+        for node in dp:
+            dp_temp = dict()
+            key = node
+            val = dp[key]
+            for coin in coins:
+                key += coin
+                val += 1
+                if key in dp:
+                    if val < dp[key]:
+                        dp_temp[key] = dp[key]
+                else:
+                    dp_temp[key] = val
+                key -= coin
+                val -= 1
+        dp.update(dp_temp)
+        if amount in dp:
+            return dp[amount]
+    return -1
+        
+print(min_coins([1, 2, 5], 11))    # ➞ 3   (5 + 5 + 1)
+print(min_coins([2], 3))           # ➞ -1  (cannot make 3 with only 2s)
+print(min_coins([1], 0))           # ➞ 0
+print(min_coins([1], 2))           # ➞ 2 
