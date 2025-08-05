@@ -1,0 +1,7 @@
+def entropy(s: str) -> float:
+    counter = Counter(s)
+    length = len(s)
+    return -sum((freq / length) * log2(freq / length) for freq in counter.values())
+
+def sort_by_entropy(strings: list[str]) -> list[str]:
+    return sorted(strings, key=entropy, reverse=True)
