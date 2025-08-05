@@ -1,0 +1,20 @@
+from collections import Counter
+from math import log2
+
+def sort_by_entropy(strings: list[str]) -> list[str]:
+    dict_entropy = dict()
+    for s in strings:
+        counter = Counter(s)
+        length = len(s)
+        entropy = 0
+        for c in counter:
+            entropy -= (counter[c] / length) * log2(counter[c] / length)
+        dict_entropy[s] = entropy
+    dict_entropy = dict(sorted(dict_entropy.items(), key = lambda x:x[1], reverse=True))
+    
+    return list(dict_entropy.keys())
+            
+
+
+strings = ["aaaa", "abcd", "aabb", "abcabc", "zzzz"]
+print(sort_by_entropy(strings))
