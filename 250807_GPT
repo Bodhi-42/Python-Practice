@@ -1,0 +1,13 @@
+import re
+from collections import Counter
+
+def most_common(paragraph: str, banned: list[str]) -> str:
+    words = re.findall(r'\w+', paragraph.lower())  # only words
+    banned_set = set(banned)
+    filtered = [word for word in words if word not in banned_set]
+    return Counter(filtered).most_common(1)[0][0]
+
+paragraph = "Bob hit a ball, the hit BALL flew far after it was hit."
+banned = ["hit"]
+
+print(most_common(paragraph, banned))  # ➞ "ball"
