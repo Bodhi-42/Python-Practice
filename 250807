@@ -1,0 +1,24 @@
+from collections import Counter
+
+def most_common(paragraph: str, banned: list[str]) -> str:
+    
+    words = paragraph.lower().split()
+    stack = []
+    
+    for w in range(len(words)):
+        
+        if not words[w][0].isalpha():
+            print(words[w][0].isalpha())
+            words[w] = words[w].lstrip(words[w][0])
+        if not words[w][-1].isalpha():
+            print(words[w][-1].isalpha())
+            words[w] = words[w].rstrip(words[w][-1])
+        if words[w] not in banned:
+            stack.append(words[w])
+
+    return Counter(stack).most_common()[0][0]
+
+paragraph = "Bob hit a ball, the hit BALL flew far after it was hit."
+banned = ["hit"]
+
+print(most_common(paragraph, banned))  # ➞ "ball"
