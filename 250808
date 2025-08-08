@@ -1,0 +1,37 @@
+def run_length_encode(s: str) -> str:
+    
+    previous = ""
+    count = 1
+    stack = []
+    
+    for c in s:
+        
+        if c == previous:
+            count += 1
+        else:
+            stack.append(previous)
+            stack.append(str(count))
+            count = 1
+            previous = c
+            
+    stack.append(previous)
+    stack.append(str(count))
+
+    return "".join(stack[2:])
+
+def run_length_decode(encoded: str) -> str:
+    
+    stack = []
+
+    for i in range(len(encoded)//2):
+        a, n = encoded[2 * i], encoded[2 * i + 1]
+        stack.extend([a] * int(n))
+
+    return "".join(stack)
+
+print(run_length_encode("aaabbc"))      # ➞ "a3b2c1"
+print(run_length_encode("abcd"))        # ➞ "a1b1c1d1"
+print(run_length_encode("aaaaaaa"))     # ➞ "a7"
+
+print(run_length_decode("a3b2c1"))      # ➞ "aaabbc"
+
