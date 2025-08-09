@@ -1,0 +1,24 @@
+from math import trunc
+
+def evaluate_rpn(tokens: list[str]) -> int:
+    stack = []
+    for t in tokens:
+        if t.lstrip("-").isdigit():  # handles negatives too
+            stack.append(int(t))
+        else:
+            b = stack.pop()
+            a = stack.pop()
+            if t == "+":
+                stack.append(a + b)
+            elif t == "-":
+                stack.append(a - b)
+            elif t == "*":
+                stack.append(a * b)
+            elif t == "/":
+                stack.append(trunc(a / b))
+    return stack[0]
+
+# Test cases
+print(evaluate_rpn(["2", "1", "+", "3", "*"]))    
+print(evaluate_rpn(["4", "13", "5", "/", "+"]))  
+print(evaluate_rpn(["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"]))
