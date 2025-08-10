@@ -1,0 +1,53 @@
+from collections import Counter
+
+def huffman_encode(s: str) -> dict[str, str]:
+    frequency = Counter(s)
+    tree = []
+    result_dict = dict()
+    for c in frequency:
+        tree.append([frequency[c], 0, [c], [""]])
+
+    while len(tree) > 2:
+        tree.sort()
+        tree.reverse()
+        a = tree.pop()
+        b = tree.pop()
+        temp_a = []
+        temp_b = []
+        if a[1] > b[1]:
+            for i in a[3]:
+                temp_a.append("0" + i)
+                b[1] += 1
+        elif a[1] < b[1]:
+            for i in b[3]:
+                temp_b.append("1" + i)
+                a[1] += 1
+        else:
+            for i in a[3]:
+                temp_a.append("0" + i)
+            for i in b[3]:
+                temp_b.append("1" + i)
+            a[1] += 1
+            b[1] += 1    
+        tree.append([a[0] + b[0], max(a[1], b[1]), a[2] + b[2], temp_a + temp_b])
+
+    tree.sort()
+    tree.reverse()
+    a = tree.pop()
+    b = tree.pop()
+    temp_a = []
+    temp_b = []
+    for i in a[3]:
+        temp_a.append("0" + i)
+    for i in b[3]:
+        temp_b.append("1" + i)
+    tree.append([a[0] + b[0], max(a[1], b[1]), a[2] + b[2], temp_a + temp_b])
+
+    for i in range(len(tree[0][2])):
+        result_dict[tree[0][2][i]] = tree[0][3][i]
+
+    return result_dict
+        
+
+print(huffman_encode("ABRACADABRA"))
+##{'A': '0', 'B': '111', 'R': '110', 'C': '101', 'D': '100'}
