@@ -1,0 +1,28 @@
+import heapq
+
+def dijkstra(self, graph):
+    array = dict()
+        
+    for c in graph:
+        array[c] = float("inf")
+        
+    array[self] = 0
+    que = [self]
+        
+    while que:
+        curr = que.pop()
+        for l in graph[curr]:
+            if array[l[0]] > l[1] + array[curr]:
+                array[l[0]] = l[1] + array[curr]
+                heapq.heappush(que, l[0])
+    print(array)
+
+graph = {
+    'A': [('B', 1), ('C', 4)],
+    'B': [('C', 2), ('D', 5)],
+    'C': [('D', 1)],
+    'D': []
+}
+start = 'A'
+
+dijkstra(start, graph)
