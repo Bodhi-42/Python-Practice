@@ -1,0 +1,32 @@
+import heapq
+
+def dijkstra(start, graph):
+    distances = {node: float("inf") for node in graph}
+    distances[start] = 0
+    
+    # Priority queue: (distance, node)
+    queue = [(0, start)]
+    
+    while queue:
+        curr_dist, curr_node = heapq.heappop(queue)
+        
+        # Skip if we already found a better path
+        if curr_dist > distances[curr_node]:
+            continue
+        
+        for neighbor, weight in graph[curr_node]:
+            distance = curr_dist + weight
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                heapq.heappush(queue, (distance, neighbor))
+    
+    print(distances)
+
+graph = {
+    'A': [('B', 1), ('C', 4)],
+    'B': [('C', 2), ('D', 5)],
+    'C': [('D', 1)],
+    'D': []
+}
+
+dijkstra('A', graph)
