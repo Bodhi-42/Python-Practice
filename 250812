@@ -1,0 +1,46 @@
+class Account:
+    def __init__(self, owner, balance = 0):
+        self.owner = str(owner)
+        self.balance = float(balance)
+        
+    def __str__(self):
+        return(f'Account(owner={self.owner}, balance={self.balance}')
+    
+    def deposit(self, amount):
+        self.balance += amount
+        
+    def withdraw(self, amount):
+        self.balance -= amount
+
+class Bank:
+    def __init__(self):
+        self.accounts_list = list()
+        
+    def add_account(self, account):
+        self.accounts_list.append(account)
+        
+    def find_account(self, owner):
+        for a in self.accounts_list:
+            if a.owner == owner:
+                return a
+            
+    def transfer(self, from_owner, to_owner, amount):
+        Account.withdraw(self.find_account(from_owner), amount)
+        Account.deposit(self.find_account(to_owner), amount)
+
+ABank = Bank()
+
+account1 = Account("John", 5000)
+account2 = Account("Doe", 2000)
+
+Bank.add_account(ABank, account1)
+Bank.add_account(ABank, account2)
+
+account1.deposit(10000)
+print(str(account1))
+account1.withdraw(1000)
+print(str(account1))
+
+Bank.transfer(ABank, "John", "Doe", 10000)
+print(str(account1))
+print(str(account2))
