@@ -1,0 +1,57 @@
+class Book:
+    def __init__(self, title, author, available = True):
+        self.title = str(title)
+        self.author = str(author)
+        self.available = bool(available)
+
+    def __str__(self):
+        return "{0} by {1} ({2})".format(self.title, self.author, lambda x: "Available" if self.available == True else "Checked out")
+
+    def check_out(self):
+        if self.available == False:
+            print("Already checked out")
+        else:
+            self.available = False
+
+    def return_book(self):
+        self.available = True
+
+class Library:
+    def __init__(self):
+        self.books = list()
+
+    def add_book(self, book):
+        self.books.append(book)
+
+    def find_books_by_author(self, author):
+        temp = list()
+        for book in self.books:
+            if book.author == author:
+                temp.append(book.title)
+        return temp
+
+    def check_out_book(self, title):
+        for book in self.books:
+            if book.title == title:
+                Book.check_out(book)
+
+    def return_book(self, title):
+        for book in self.books:
+            if book.title == title:
+                Book.return_book(book)
+
+lib = Library()
+
+b1 = Book("The Hobbit", "Tolkien")
+b2 = Book("The Silmarillion", "Tolkien")
+b3 = Book("Dune", "Herbert")
+
+lib.add_book(b1)
+lib.add_book(b2)
+lib.add_book(b3)
+
+lib.check_out_book("The Hobbit")
+lib.check_out_book("The Hobbit")   # Already checked out
+lib.return_book("The Hobbit")
+
+print(lib.find_books_by_author("Tolkien"))
