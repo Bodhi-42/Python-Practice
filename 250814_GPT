@@ -1,0 +1,33 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class Sample:
+    def __init__(self, N, sample_size):
+        self.N = N
+        self.sample_size = sample_size
+
+    def sample_mean_distribution(self, population):
+        # Vectorized approach: create N samples and take mean along axis 1
+        samples = np.random.choice(population, size=(self.N, self.sample_size))
+        return samples.mean(axis=1)
+
+# Population: exponential distribution (skewed)
+population = np.random.exponential(scale=1.0, size=100000)
+
+sample_1 = Sample(1000, 5)
+sample_2 = Sample(1000, 50)
+
+plt.figure(figsize=(8,5))
+
+# Original population
+plt.hist(population, bins=30, density=True, alpha=0.5, label='Population (Exponential)')
+
+# Sample means
+plt.hist(sample_1.sample_mean_distribution(population), bins=30, density=True, alpha=0.5, label='Sample means (n=5)')
+plt.hist(sample_2.sample_mean_distribution(population), bins=30, density=True, alpha=0.5, label='Sample means (n=50)')
+
+plt.title("Central Limit Theorem Demonstration")
+plt.xlabel("Value")
+plt.ylabel("Density")
+plt.legend()
+plt.show()
