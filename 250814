@@ -1,0 +1,24 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class Sample:
+    def __init__(self, N, sample_size):
+        self.N = N
+        self.sample_size = sample_size
+
+    def sample_mean_distribution(self, x):
+        temp = []
+        for _ in range(self.N):
+            temp.append(np.mean(np.random.choice(x, size = self.sample_size)))
+        return temp
+
+x = np.random.exponential(size = 100000)
+sample_1 = Sample(100, 5)
+sample_2 = Sample(100, 50)
+
+plt.hist(x, bins = 30, density=True, alpha = 0.5)
+plt.hist(sample_1.sample_mean_distribution(x), bins = 30, density=True, alpha = 0.5)
+plt.hist(sample_2.sample_mean_distribution(x), bins = 30, density=True, alpha = 0.5)
+
+plt.plot()
+plt.show()
