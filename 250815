@@ -1,0 +1,35 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class AR1Process:
+    def __init__(self, phi, n, seed = 0):
+        self.phi = phi
+        self.n = n
+        self.seed = seed
+
+    def generate_series(self):
+        temp = [self.seed]
+        for _ in range(self.n):
+            temp.append(self.phi * temp[-1] + np.random.normal(0, 1))
+        plt.scatter(list(range(len(temp))), temp, s = 0.1)
+        plt.title("AR1")
+        plt.xlabel("Time")
+        plt.ylabel("AR(1)")
+        plt.legend()
+        plt.show()
+        return temp
+
+    def autocorrelation(self, k):
+        org = self.generate_series()
+        x = org[: -k]
+        y = org[k:]
+        plt.scatter(x, y, s = 0.1)
+        plt.title("Autocorrelation")
+        plt.xlabel("Org")
+        plt.ylabel("Lag")
+        plt.legend()
+        plt.show()
+        
+
+series_1 = AR1Process(1, 10000, 0)
+series_1.autocorrelation(20)
