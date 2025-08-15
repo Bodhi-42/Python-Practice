@@ -1,0 +1,47 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class AR1Process:
+    def __init__(self, phi, n, x0=0, random_seed=None):
+        self.phi = phi
+        self.n = n
+        self.x0 = x0
+        self.random_seed = random_seed
+
+    def generate_series(self):
+        if self.random_seed is not None:
+            np.random.seed(self.random_seed)
+        series = [self.x0]
+        for _ in range(self.n):
+            series.append(self.phi * series[-1] + np.random.normal(0, 1))
+        return np.array(series)
+
+    def plot_series(self):
+        series = self.generate_series()
+        plt.plot(series, label=f"phi={self.phi}")
+        plt.title("AR(1) Time Series")
+        plt.xlabel("Time")
+        plt.ylabel("Value")
+        plt.legend()
+        plt.show()
+
+    def autocorrelation(self, k):
+        series = self.generate_series()
+        mean = np.mean(series)
+        numerator = np.sum((series[:-k] - mean) * (series[k:] - mean))
+        denominator = np.sum((series - mean) ** 2)
+        rho_k = numerator / denominator
+        print(f"Lag-{k} autocorrelation ≈ {rho_k:.3f}")
+
+        # Optional lag plot
+        plt.scatter(series[:-k], series[k:], s=1)
+        plt.title(f"Lag-{k} Plot")
+        plt.xlabel("X(t)")
+        plt.ylabel(f"X(t+{k})")
+        plt.show()
+
+
+# Example usage
+ar = AR1Process(phi=0.8, n=500, random_seed=42)
+ar.plot_series()
+ar.autocorrelation(1)
