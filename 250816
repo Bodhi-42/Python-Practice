@@ -1,0 +1,33 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+class MarkovWeather:
+    def __init__(self, s_s, s_r, r_s, r_r):
+        self.transition_matrix = np.array([[s_s, s_r],
+            [r_s, r_r]])
+        
+    def simulate(self, days, start_state):
+        state = start_state
+        sequence = [state]
+        for _ in range(days):
+            probs = self.transition_matrix[state]  # row for current state
+            state = np.random.choice([0, 1], p=probs)  
+            sequence.append(state)
+        return sequence
+            
+    def probability_of_sunny(self, days, start_state, simulations=10000):
+        sunny_count = 0
+        for _ in range(simulations):
+            seq = self.simulate(days, start_state)
+            if seq[days] == 1:  # sunny on that day
+                sunny_count += 1
+        return sunny_count / simulations
+
+weather_1 = MarkovWeather(0.9, 0.1, 0.5, 0.5)
+probs = [weather_1.probability_of_sunny(day, start_state=1) for day in range(31)]
+
+plt.plot(range(31), probs, marker='o')
+plt.xlabel("Day")
+plt.ylabel("P(Sunny)")
+plt.title("Probability of Sunshine Over Time")
+plt.show()
