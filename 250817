@@ -1,0 +1,30 @@
+import numpy as np
+
+class Graph():
+    def __init__(self, graph):
+        self.adj_mat = np.array(graph)
+        self.tr_mat = Graph.build_transition_matrix(self)
+
+    def build_transition_matrix(self):
+        tr_mat = list()
+        for r in self.adj_mat:
+            temp = sum(r)
+            tr_mat.append(r / temp)
+        return np.array(tr_mat)
+
+    def pagerank(self, d, max_iter, tol):
+        uni_mat = np.ones(self.adj_mat.shape) / len(self.adj_mat)
+        prior = uni_mat
+        for _ in range(max_iter + 1):
+            pagerank = d * prior @ self.tr_mat + (1-d) * uni_mat
+            temp = np.abs(pagerank - prior)
+            if len(temp[temp > tol]) != 0:
+                prior = pagerank
+            else:
+                return pagerank
+
+graph_1 = Graph([[0, 1, 1],
+                 [0, 0, 1],
+                 [1, 0, 0]])
+
+print(graph_1.pagerank(0.85, 100, 1e-6))
