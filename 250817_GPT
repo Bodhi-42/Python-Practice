@@ -1,0 +1,30 @@
+import numpy as np
+
+class Graph():
+    def __init__(self, graph):
+        self.adj_mat = np.array(graph)
+        self.tr_mat = self.build_transition_matrix()
+
+    def build_transition_matrix(self):
+        tr_mat = []
+        for r in self.adj_mat:
+            temp = sum(r)
+            if temp == 0:
+                # handle dangling nodes (no outgoing links) → distribute evenly
+                tr_mat.append(np.ones(len(r)) / len(r))
+            else:
+                tr_mat.append(r / temp)
+        return np.array(tr_mat)
+
+    def pagerank(self, d=0.85, max_iter=100, tol=1e-6):
+        n = len(self.adj_mat)
+        uni_vec = np.ones(n) / n   # uniform teleportation vector
+        prior = uni_vec.copy()     # initial guess
+
+        for _ in range(max_iter):
+            pagerank = d * prior @ self.tr_mat + (1-d) * uni_vec
+            if np.linalg.norm(pagerank - prior, 1) < tol:
+                return pagerank
+            prior = pagerank
+
+        return pagerank   # return even if not fully converged
