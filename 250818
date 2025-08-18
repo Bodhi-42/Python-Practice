@@ -1,0 +1,23 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class CLTSimulator:
+    def __init__(self, dist_func, sample_size, n_samples):
+        self.dist_func = dist_func
+        self.sample_size = sample_size
+        self.n_samples = n_samples
+
+    def simulate(self):
+        dist_mean = []
+        for _ in range(self.n_samples):
+            dist_mean.append(np.mean(
+                self.dist_func(size = self.sample_size)))
+        self.dist_mean = dist_mean
+
+    def plot(self):
+        plt.hist(self.dist_mean, bins = self.n_samples // 100)
+        plt.show()
+
+clt = CLTSimulator(np.random.exponential, sample_size = 30, n_samples = 10000)
+clt.simulate()
+clt.plot()
