@@ -1,0 +1,42 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class MonteCarloIntegrator:
+    def __init__(self, f, a, b, N):
+        self.f = f
+        self.a = a
+        self.b = b
+        self.N = N
+
+    def estimate(self):
+        est = 0
+        for _ in range(self.N):
+            est += self.f(np.random.uniform(self.a, self.b))
+        est *= (self.b - self.a) / self.N
+        return est
+
+    def compare_with_exact(self, exact):
+        print(abs(exact - self.estimate()))
+
+    def convergence_plot(self, exact):
+        est = 0
+        conv = []
+        for i in range(self.N):
+            est += self.f(np.random.uniform(self.a, self.b)) * (self.b - self.a)
+            temp = est / (i+1)
+            conv.append(temp)
+        x = list(range(1, self.N + 1))
+        plt.plot(x, conv, label = "MonteCarlo")
+        plt.plot(x, [exact] * self.N, label = "Exact Value")
+        plt.legend()
+        plt.show()
+        
+f = lambda x: np.sin(x)
+a, b = 0, np.pi
+exact = 2.0  # ∫₀^π sin(x) dx = 2
+
+mc = MonteCarloIntegrator(f, a, b, N=10000)
+print("Estimate:", mc.estimate())
+mc.compare_with_exact(exact)
+mc.convergence_plot(exact)
+        
