@@ -1,0 +1,33 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class PiEstimator:
+    def __init__(self, N):
+        self.N = N
+
+    def estimate(self):
+        self.x = np.random.uniform(-1, 1, self.N)
+        self.y = np.random.uniform(-1, 1, self.N)
+        arr = np.square(self.x) + np.square(self.y)
+        self.pi = len(arr[arr <= 1]) / self.N * 4
+        return self.pi
+    
+    def error(self):
+        return abs(self.pi - np.pi)
+
+    def plot(self):
+        arr = (np.square(self.x) + np.square(self.y)) <= 1
+        color = list()
+        for c in arr:
+            if c:
+                color.append('red')
+            else:
+                color.append('blue')
+                
+        plt.scatter(self.x, self.y, s = 0.1, c = color)        
+        plt.show()
+
+pi_10000 = PiEstimator(10000)
+print(pi_10000.estimate())
+print(pi_10000.error())
+pi_10000.plot()
