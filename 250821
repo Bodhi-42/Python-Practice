@@ -1,0 +1,45 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy
+
+class FourierSeries:
+    def __init__(self, f, n):
+        self.f = f
+        self.n = n
+        self.range = np.linspace(-np.pi, np.pi, endpoint=False)
+
+    def coefficient(self):
+        a0 = (1/(2*np.pi)) * (scipy.integrate.quad(self.f, -np.pi, np.pi))[0]
+        ak = []
+        bk = []
+        count = 1
+        def a_cos(x):
+            nonlocal count
+            return self.f(x) * np.cos(count * x)
+        def b_sin(x):
+            nonlocal count
+            return self.f(x) * np.sin(count * x)
+        for k in range(self.n):
+            ak.append((1/np.pi) * scipy.integrate.quad(a_cos, -np.pi, np.pi)[0])
+            bk.append((1/np.pi) * scipy.integrate.quad(b_sin, -np.pi, np.pi)[0])
+            count += 1
+
+        return a0, ak, bk
+
+    def build_sum(self):
+        a0, ak, bk = self.coefficient()
+        partial_sum = a0 / 2
+        for k in range(self.n):
+            partial_sum += ak[k] * np.cos((k+1) * self.range)
+            partial_sum += bk[k] * np.sin((k+1) * self.range)
+
+        return partial_sum
+
+    def plot(self):
+        plt.plot(self.range, self.f(self.range))
+        plt.plot(self.range, self.build_sum())
+        plt.show()
+
+
+square = FourierSeries(scipy.signal.square, 10)
+square.plot()
