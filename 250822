@@ -1,0 +1,28 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class CAPM:
+    def __init__(self, r_i, r_m):
+        self.r_i = r_i
+        self.r_m = r_m
+        self.r_f = 0.02
+
+    def beta(self):
+        print(len(self.r_i), len(self.r_m))
+        return np.cov(self.r_i, self.r_m)[0, 1] / np.var(self.r_m)
+
+    def ERi(self):
+        return self.r_f + self.beta() * (np.mean(self.r_m) - self.r_f)
+
+    def SML(self):
+        x = np.linspace(0, 1.5)
+        plt.plot(x, self.r_f + x * (np.mean(self.r_m) - self.r_f))
+        plt.plot(self.beta(), self.ERi(), "o", color = "red")
+        plt.show()
+        
+r_m = [0.1922, 0.027, 0.1682, 0.3499, 0.1794, 0.0843, 0.0589, 0.3152, -0.0104, 0.3796, 0.4758, 0.2663, -0.3297, 0.5381, 0.2488, 0.1014]
+r_i = [-0.1756, -0.1, -0.1154, 0.3067, 0.2516, 0.6439, 2.2385, 0.8128, -0.3101, 0.7625, 1.2193, 1.2529, -0.5031, 2.3887, 1.7117, 0.3554]
+nvidia = CAPM(r_m, r_i)
+print(nvidia.beta())
+print(nvidia.ERi())
+nvidia.SML()
