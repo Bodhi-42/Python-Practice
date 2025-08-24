@@ -1,0 +1,35 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.optimize import brentq
+
+class Bond:
+    def __init__(self, fv, rate, maturity, pv):
+        self.fv = fv
+        self.rate = rate
+        self.maturity = maturity
+        self.pv = pv
+
+    def price(self, ytm):
+        cf = [self.fv * self.rate] * self.maturity
+        cf[self.maturity - 1] += self.fv
+        return np.sum(cf * np.power(1 / (1 + ytm), np.arange(1, self.maturity + 1)))
+
+    def ytm(self, target):
+        def price_gap(x):
+            return self.price(x) - target
+        return brentq(price_gap, a = 0, b = 1)
+
+    def plot_yield(self):
+        ytm = np.linspace(0, 1)
+        price = []
+        for y in ytm:
+            price.append(self.price(y))
+        plt.plot(ytm, price)
+        plt.show()
+
+b1 = Bond(1000, 0.05, 10, 950)
+print(b1)
+print(b1.price(0.02))
+print(b1.ytm(950))
+b1.plot_yield()
+
