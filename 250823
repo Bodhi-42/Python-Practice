@@ -1,0 +1,50 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class Portfolio:
+    def __init__(self, returns):
+        self.returns = returns
+        self.r_f = 0.02
+
+    def randomweight(self):
+        return np.array(np.random.dirichlet(self.returns[0]))
+    
+    def portfolio_return(self, weight):
+        portfolio_return = 0
+        for c in range(len(self.returns[0])):
+            portfolio_return += weight[c] * np.mean(self.returns[:, c])
+        return portfolio_return
+
+    def portfolio_variance(self, weight):
+        cov_matrix = np.cov(self.returns, rowvar = False, bias = True)
+        weight_matrix = np.dot(weight.reshape(len(weight), -1), weight.reshape(1, -1))
+        return np.sqrt(np.sum(cov_matrix * weight_matrix))
+        
+    def sharpe_ratio(self, weight):
+        return (self.portfolio_return(weight) - self.r_f) / self.portfolio_variance(weight)
+
+    def find_optimal(self, n):
+        max_sharpe = 0
+        optimal_portfolio = np.zeros(len(self.returns[0]))
+        for _ in range(n):
+            w = self.randomweight()
+            if max_sharpe < self.sharpe_ratio(w):
+                optimal_portfolio = w
+                max_sharpe = self.sharpe_ratio(w)
+            plt.plot(self.portfolio_variance(w), self.portfolio_return(w), "o", color = "blue")
+        plt.plot(self.portfolio_variance(optimal_portfolio), self.portfolio_return(optimal_portfolio), "o", color = "red")
+        plt.show()
+
+returns = np.array([
+    [0.05, 0.02, 0.03],
+    [0.02, -0.01, 0.01],
+    [0.04, 0.03, 0.02],
+    [-0.02, 0.01, 0.00],
+    [0.03, 0.02, 0.04],
+    [0.01, -0.02, 0.02],
+    [0.02, 0.01, 0.03],
+    [0.03, 0.00, 0.01]
+])
+
+p1 = Portfolio(returns)
+p1.find_optimal(1000)
