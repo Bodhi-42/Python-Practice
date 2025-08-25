@@ -1,0 +1,32 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+
+class OptionMC:
+    def __init__(self, S0, K, r, sigma, T, n_simulations):
+        self.S0 = S0
+        self.K = K
+        self.r = r
+        self.sigma = sigma
+        self.T = T
+        self.n_simulations = n_simulations
+
+    def stock_price(self):
+        return self.S0 * math.e ** ((self.r - 0.5 * self.sigma ** 2) * self.T + self.sigma * np.random.rand() * self.T ** 0.5)
+
+    def option_price(self):
+        simulated = list()
+        for _ in range(self.n_simulations):
+            simulated.append(max(self.stock_price() - self.K, 0))
+        simulated = np.array(simulated)
+        simulated *= math.e ** (-self.r * self.T)
+        self.simulated = simulated
+        return np.mean(simulated)
+
+    def plot_distribution(self):
+        plt.hist(self.simulated)
+        plt.show()
+
+call = OptionMC(S0=100, K=105, r=0.05, sigma=0.2, T=1, n_simulations=100000)
+print("Estimated Call Price:", call.option_price())
+call.plot_distribution()
