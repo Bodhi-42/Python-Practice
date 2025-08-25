@@ -1,0 +1,37 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+
+class OptionMC:
+    def __init__(self, S0, K, r, sigma, T, n_simulations):
+        self.S0 = S0
+        self.K = K
+        self.r = r
+        self.sigma = sigma
+        self.T = T
+        self.n_simulations = n_simulations
+
+    def stock_price(self):
+        Z = np.random.randn()  # standard normal
+        return self.S0 * math.exp((self.r - 0.5 * self.sigma ** 2) * self.T + self.sigma * math.sqrt(self.T) * Z)
+
+    def option_price(self):
+        simulated = []
+        for _ in range(self.n_simulations):
+            payoff = max(self.stock_price() - self.K, 0)  # correct payoff
+            simulated.append(payoff)
+        simulated = np.array(simulated)
+        simulated *= math.exp(-self.r * self.T)  # discount
+        self.simulated = simulated
+        return np.mean(simulated)
+
+    def plot_distribution(self):
+        plt.hist(self.simulated, bins=50, edgecolor="k", alpha=0.7)
+        plt.xlabel("Discounted Payoff")
+        plt.ylabel("Frequency")
+        plt.title("Distribution of Simulated Payoffs")
+        plt.show()
+
+call = OptionMC(S0=100, K=105, r=0.05, sigma=0.2, T=1, n_simulations=100000)
+print("Estimated Call Price:", call.option_price())
+call.plot_distribution()
