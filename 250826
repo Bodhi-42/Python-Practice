@@ -1,0 +1,44 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class Bond:
+    def __init__(self, fv, rate, T):
+        self.fv = fv
+        self.rate = rate
+        self.T = T
+        cf = [self.fv * self.rate] * self.T
+        cf[self.T - 1] += self.fv
+        self.cf = cf
+
+    def price(self, y):
+        return np.sum(self.cf * np.power(1 / (1 + y), np.arange(1, self.T + 1)))
+
+    def duration(self, y):
+        return np.sum(np.arange(1, self.T + 1) * self.cf * np.power(1 / (1 + y), np.arange(1, self.T + 1))) / self.price(y)
+
+    def convexity(self, y):
+        return np.sum(np.arange(1, self.T + 1) * np.arange(2, self.T + 2) * self.cf * np.power(1 / (1 + y), np.arange(3, self.T + 3))) / self.price(y)
+
+    def plot_price(self):
+        ytm = np.linspace(0, 1)
+        price = []
+        duration = []
+        convexity = []
+        for y in ytm:
+            price.append(self.price(y))
+            duration.append(self.duration(y))
+            convexity.append(self.convexity(y))
+        plt.plot(ytm, price, label = "Price")
+        plt.plot(ytm, duration, label = "Duration")
+        plt.plot(ytm, convexity, label = "Convexity")
+        plt.xlabel("Yield")
+        plt.ylabel("Price / Duration / Convexity")
+        plt.legend()
+        plt.show()
+
+b1 = Bond(1000, 0.05, 5)
+print(b1.price(0.03))
+print(b1.cf)
+print(b1.duration(0.03))
+print(b1.convexity(0.03))
+b1.plot_price()
