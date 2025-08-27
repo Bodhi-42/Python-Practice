@@ -1,0 +1,33 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class VasicekModel:
+    def __init__(self, a, b, sigma, r0, T, n_steps):
+        self.a = a
+        self.b = b
+        self.sigma = sigma
+        self.r0 = r0
+        self.T = T
+        self.n_steps = n_steps
+        self.range = np.linspace(0, self.T)
+
+    def rT(self):
+        self.rT = self.r0 + self.a * (self.b - self.r0) * self.range + self.sigma * np.random.randn() * self.range ** 0.5
+        return self.rT
+
+    def plot_path(self):
+        self.rT()
+        plt.plot(self.range, self.rT)
+        plt.show()
+    
+
+vasicek = VasicekModel(
+    a=0.1,      # speed of mean reversion
+    b=0.05,     # long-term mean
+    sigma=0.02, # volatility
+    r0=0.03,    # initial rate
+    T=1.0,      # 1 year
+    n_steps=252 # daily steps
+)
+
+vasicek.plot_path()
