@@ -1,0 +1,28 @@
+import numpy as np
+
+class DefaultSimulation:
+    def __init__(self, bonds, n_trials):
+        self.bonds = bonds
+        self.n_trials = n_trials
+        # store LGD (Loss Given Default) and PD
+        self.lgd = np.array([b["FV"] * (1 - b["RR"]) for b in bonds])
+        self.pd = np.array([b["PD"] for b in bonds])
+
+    def run_simulation(self):
+        # Simulate defaults: (n_trials × n_bonds) Bernoulli
+        defaults = np.random.binomial(1, self.pd, size=(self.n_trials, len(self.bonds)))
+        losses = defaults @ self.lgd  # matrix mult: sum over bonds
+        self.dist = losses
+        return losses
+
+    def expected_loss(self):
+        return self.dist.mean()
+
+    def VaR(self, alpha=0.95):
+        self.VaR_val = np.percentile(self.dist, 100 * alpha)
+        return self.VaR_val
+
+    def expected_shortfall(self, alpha=0.95):
+        if not hasattr(self, "VaR_val"):
+            self.VaR(alpha)
+        return self.dist[self.dist >= self.VaR_val].mean()
