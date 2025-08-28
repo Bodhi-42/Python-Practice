@@ -1,0 +1,44 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class DefaultSimulation:
+    def __init__(self, bonds, n_trials):
+        self.bonds = bonds
+        self.n_trials = n_trials
+        arr = np.empty((0, 2))
+        AUM = 0
+        for bond in bonds:
+            arr = np.append(arr, np.array([[bond["FV"] * (1 - bond["RR"]), bond["PD"]]]), axis = 0)
+        self.array = arr
+
+    def run_simulation(self):
+        dist = np.zeros(self.n_trials)
+        for r in self.array:
+            dist += r[0] * np.random.binomial(1, r[1], size = n_trials)
+        self.dist = dist
+        return dist
+
+    def expected_loss(self):
+        return np.mean(self.dist)
+
+    def VaR(self):
+        self.VaR = np.var(self.dist) ** 0.5 * 1.9599639848
+        return self.VaR
+
+    def expected_shortfall(self):
+        return np.mean(self.dist[self.dist > self.VaR])
+        
+
+bonds = [
+    {"FV": 1000, "PD": 0.02, "RR": 0.4},
+    {"FV": 2000, "PD": 0.05, "RR": 0.3},
+    {"FV": 1500, "PD": 0.03, "RR": 0.5},
+    {"FV": 500,  "PD": 0.10, "RR": 0.2}
+]
+n_trials = 100000
+
+b1 = DefaultSimulation(bonds, n_trials)
+b1.run_simulation()
+print(b1.expected_loss())
+print(b1.VaR())
+print(b1.expected_shortfall())
