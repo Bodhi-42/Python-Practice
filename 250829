@@ -1,0 +1,34 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class AR1:
+    def __init__(self, phi, sigma, n_steps, x0):
+        self.phi = phi
+        self.sigma = sigma
+        self.n_steps = n_steps
+        self.x0 = x0
+
+    def simulation(self):
+        series = [self.x0[-1]]
+        for _ in range(self.n_steps):
+            series.append(self.phi * series[-1] + np.random.normal(0, self.sigma))
+        self.series = series
+        return series
+
+    def plot(self):
+        while True:
+            try:
+                plt.plot(list(range(self.n_steps + 1)), self.series)
+                plt.show()
+                return 0
+            except:
+                print("No prior simulation found. Running simulation.")
+                self.simulation()
+
+phi = 0.7
+sigma = 1.0
+n_steps = 500
+x0 = [0]
+
+ar1 = AR1(phi, sigma, n_steps, x0)
+ar1.plot()
